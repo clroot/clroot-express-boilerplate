@@ -5,14 +5,14 @@ import logger from 'morgan';
 
 import api from './api';
 
-const main = express();
+const app = express();
 
-main.use(logger('dev'));
-main.use(express.json());
-main.use(express.urlencoded({ extended: false }));
-main.use(cookieParser());
-main.use(express.static(path.join(__dirname, 'public')));
+app.use(logger(process.env.LOG_LEVEL || 'dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-main.use('/', api);
+app.use('/', api);
 
-export default main;
+export default app;
