@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon --experimental-modules --exec babel-node src/index.js --watch src/ --trace-deprecation"
+    "start": "cross-env NODE_ENV=development nodemon --experimental-modules --exec babel-node src/index.js --watch src/ --trace-deprecation",
+    "test": "cross-env NODE_ENV=test jest --passWithNoTests --forceExit --silent --detectOpenHandles"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -22,8 +23,10 @@
     "@babel/core": "^7.16.0",
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
+    "babel-jest": "^27.4.6",
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.15",
     "sqlite3": "^5.0.2"
   }

@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import getPort from 'get-port';
 import app from './main';
-import database from './database';
+import sequelize from './database';
+import { syncAllModel } from './models';
 
 dotenv.config();
 
@@ -10,7 +11,9 @@ export const startServer = async (port = process.env.PORT || 4000, callback = un
     port = await getPort({ port: getPort.makeRange(4001, 5000) });
   }
 
-  await database.authenticate();
+  await sequelize.authenticate();
+  await syncAllModel();
+
   console.log(`Server is starting on port ${port}`);
   const server = await app.listen(port);
 
