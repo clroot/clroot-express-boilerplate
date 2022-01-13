@@ -1,6 +1,7 @@
 import { syncAllModel, User } from '/models';
 import { UserService } from '/service';
 import { UserDuplicateError } from '/error';
+import bcrypt from 'bcrypt';
 
 const testUserEmail = 'test@email.com';
 const testUsername = 'test';
@@ -28,7 +29,7 @@ describe('UserService 의', () => {
 
   describe('registerUser 메서드는', () => {
     describe('성공시', () => {
-      afterAll(async () => {
+      afterEach(async () => {
         await removeTestUser();
       });
 
@@ -36,6 +37,14 @@ describe('UserService 의', () => {
         const userId = await UserService.register(payload);
 
         expect(typeof userId).toBe('number');
+      });
+
+      it('생성된 user 의 password 는 hash 되어있다.', async () => {
+        await UserService.register(payload);
+        const createdUser = await UserService.findByEmail(testUserEmail);
+
+        expect(createdUser.password).not.toBe(testUserPassword);
+        expect(await bcrypt.compare(testUserPassword, createdUser.password)).toBe(true);
       });
     });
 
