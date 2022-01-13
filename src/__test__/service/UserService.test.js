@@ -1,6 +1,6 @@
-import { syncAllModel, User } from '../../models';
-import { UserService } from '../../service';
-import { UserDuplicateError } from '../../error';
+import { syncAllModel, User } from '/models';
+import { UserService } from '/service';
+import { UserDuplicateError } from '/error';
 
 const testUserEmail = 'test@email.com';
 const testUsername = 'test';

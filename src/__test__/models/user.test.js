@@ -1,4 +1,4 @@
-import { syncAllModel, User } from '../../models';
+import { syncAllModel, User } from '/models';
 
 const testUserEmail = 'test@email.com';
 const testUsername = 'test';

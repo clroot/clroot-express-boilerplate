@@ -1,5 +1,5 @@
-import { User } from '../models';
-import { UserDuplicateError } from '../error';
+import { User } from '/models';
+import { UserDuplicateError } from '/error';
 
 class UserService {
   async findByEmail(email) {

@@ -1,8 +1,8 @@
 import request from 'supertest';
 import httpStatus from 'http-status';
-import { closeServer, startServer } from '../../index';
-import { User } from '../../models';
-import { UserService } from '../../service';
+import { closeServer, startServer } from '/';
+import { User } from '/models';
+import { UserService } from '/service';
 
 const testUserEmail = 'test@email.com';
 const testUsername = 'test';

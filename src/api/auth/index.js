@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import httpStatus from 'http-status';
-import { UserService } from '../../service';
-import { UserDuplicateError } from '../../error';
+import { UserService } from '/service';
+import { UserDuplicateError } from '/error';
 
 const authApi = Router();
 
