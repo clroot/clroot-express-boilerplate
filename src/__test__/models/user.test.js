@@ -10,6 +10,8 @@ describe('User Model 은', () => {
   const testUserPassword = 'test-password';
 
   it('email, username, password 필드를 가진다', async () => {
+    const beforeCount = await User.count();
+
     let testUser = await User.create({
       name: testUsername,
       email: testUserEmail,
@@ -19,5 +21,6 @@ describe('User Model 은', () => {
     expect(testUser.name).toEqual(testUsername);
     expect(testUser.email).toEqual(testUserEmail);
     expect(testUser.password).toEqual(testUserPassword);
+    expect(await User.count()).toBeGreaterThan(beforeCount);
   });
 });
