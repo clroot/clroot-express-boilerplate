@@ -13,12 +13,12 @@ describe('User Model 은', () => {
     const beforeCount = await User.count();
 
     let testUser = await User.create({
-      name: testUsername,
+      username: testUsername,
       email: testUserEmail,
       password: testUserPassword,
     });
 
-    expect(testUser.name).toEqual(testUsername);
+    expect(testUser.username).toEqual(testUsername);
     expect(testUser.email).toEqual(testUserEmail);
     expect(testUser.password).toEqual(testUserPassword);
     expect(await User.count()).toBeGreaterThan(beforeCount);
