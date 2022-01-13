@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'test') {
 
 const sequelize = new Sequelize(DATASOURCE_URL);
 
-export const closeServer = async () => {
+export const closeDatabase = async () => {
   await sequelize.close();
 
   if (process.env.NODE_ENV === 'test') {

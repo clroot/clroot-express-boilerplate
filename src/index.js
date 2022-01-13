@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import app from './main';
-import sequelize from './database';
+import sequelize, { closeDatabase } from './database';
 import { syncAllModel } from './models';
 
 dotenv.config();
@@ -16,6 +16,12 @@ export const startServer = async (port = process.env.PORT || 4000, callback = un
   const server = await app.listen(port);
 
   return callback ? callback(server) : Promise.resolve(server);
+};
+
+export const closeServer = async (server, callback = undefined) => {
+  await closeDatabase();
+  await server.close();
+  return callback ? callback() : Promise.resolve();
 };
 
 
