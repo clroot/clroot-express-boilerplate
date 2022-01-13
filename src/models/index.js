@@ -3,5 +3,9 @@ import UserModel from './user';
 export const User = UserModel;
 
 export const syncAllModel = async () => {
-  await User.sync({ alter: true });
+  try {
+    await User.sync({ alter: true });
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'test') return Promise.reject(e);
+  }
 };
