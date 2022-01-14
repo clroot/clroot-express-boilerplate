@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import { User } from '/models';
 import { UserDuplicateError } from '/error';
 
@@ -6,13 +5,11 @@ class UserService {
   async register({ email, username, password }) {
     await UserService.#validateDuplicateUser(email);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = await User.create({
       email,
       username,
-      password: hashedPassword,
     });
+    await newUser.setPassword(password);
 
     return newUser.id;
   }

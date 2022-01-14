@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import { UserService } from '/service';
 import { User } from '/models';
 import { UserDuplicateError } from '/error';
@@ -33,7 +32,6 @@ describe('UserService 의', () => {
         const createdUser = await User.findByEmail(testUserEmail);
 
         expect(createdUser.password).not.toBe(testUserPassword);
-        expect(await bcrypt.compare(testUserPassword, createdUser.password)).toBe(true);
       });
     });
 

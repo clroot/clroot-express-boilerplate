@@ -13,6 +13,11 @@ class User extends Model {
 
   async setPassword(password) {
     this.password = await bcrypt.hash(password, 10);
+    await this.save();
+  }
+
+  async checkPassword(password) {
+    return await bcrypt.compare(password, this.password);
   }
 }
 

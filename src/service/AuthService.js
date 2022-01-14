@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import { User } from '/models';
 import { AuthenticationError, UserNotFound } from '/error';
 
@@ -8,7 +7,7 @@ class AuthService {
     if (!user)
       throw new UserNotFound();
 
-    const isValid = await bcrypt.compare(password, user.password);
+    const isValid = await user.checkPassword(password);
     if (!isValid)
       throw new AuthenticationError();
 
