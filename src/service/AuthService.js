@@ -11,7 +11,6 @@ class AuthService {
     if (!isValid)
       throw new AuthenticationError();
 
-    //TODO: JWT 토큰 발급
     return user;
   }
 }
