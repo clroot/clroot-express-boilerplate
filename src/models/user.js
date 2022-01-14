@@ -26,6 +26,7 @@ User.init({
     type: DataTypes.BIGINT,
     autoIncrement: true,
     primaryKey: true,
+    field: 'user_id',
   },
   username: {
     type: DataTypes.STRING,
