@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import httpStatus from 'http-status';
+import { User } from '/models';
 import { UserService } from '/service';
 import { UserDuplicateError } from '/error';
 
@@ -10,7 +11,7 @@ authApi.post('/register', async (req, res) => {
 
   try {
     await UserService.register({ email, username, password });
-    const createdUser = await UserService.findByEmail(email);
+    const createdUser = await User.findByEmail(email);
 
     res.status(httpStatus.CREATED);
 

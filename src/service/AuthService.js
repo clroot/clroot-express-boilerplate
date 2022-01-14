@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
-import { UserService } from '/service';
+import { User } from '/models';
 import { AuthenticationError, UserNotFound } from '/error';
 
 class AuthService {
   async login({ email, password }) {
-    const user = await UserService.findByEmail(email);
+    const user = await User.findByEmail(email);
     if (!user)
       throw new UserNotFound();
 

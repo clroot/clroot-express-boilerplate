@@ -3,14 +3,8 @@ import { User } from '/models';
 import { UserDuplicateError } from '/error';
 
 class UserService {
-  async findByEmail(email) {
-    return await User.findOne({
-      where: { email },
-    });
-  }
-
   async register({ email, username, password }) {
-    await this.#validateDuplicateUser(email);
+    await UserService.#validateDuplicateUser(email);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -23,8 +17,8 @@ class UserService {
     return newUser.id;
   }
 
-  async #validateDuplicateUser(email) {
-    const isExist = await this.findByEmail(email);
+  static async #validateDuplicateUser(email) {
+    const isExist = await User.findByEmail(email);
     if (isExist !== null) {
       throw new UserDuplicateError();
     }

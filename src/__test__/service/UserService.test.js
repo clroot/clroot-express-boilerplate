@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { User } from '/models';
 import { UserService } from '/service';
+import { User } from '/models';
 import { UserDuplicateError } from '/error';
 import {
   createTestUser,
@@ -30,7 +30,7 @@ describe('UserService 의', () => {
 
       it('생성된 user 의 password 는 hash 되어있다.', async () => {
         await UserService.register(testUserPayload);
-        const createdUser = await UserService.findByEmail(testUserEmail);
+        const createdUser = await User.findByEmail(testUserEmail);
 
         expect(createdUser.password).not.toBe(testUserPassword);
         expect(await bcrypt.compare(testUserPassword, createdUser.password)).toBe(true);
@@ -52,23 +52,6 @@ describe('UserService 의', () => {
         };
 
         await expect(shouldThrowError).rejects.toThrowError(UserDuplicateError);
-      });
-    });
-  });
-
-  describe('findByEmail 메서드는', () => {
-    beforeAll(async () => {
-      await createTestUser();
-    });
-
-    afterAll(async () => {
-      await removeTestUser();
-    });
-
-    describe('성공시', () => {
-      it('생성된 유저를 return 한다.', async () => {
-        const user = await UserService.findByEmail(testUserEmail);
-        expect(user).toBeInstanceOf(User);
       });
     });
   });
