@@ -1,12 +1,19 @@
 import { User } from '/models';
-import { initDatabase, testUserEmail, testUsername, testUserPassword, testUserPayload } from '/__test__/helper';
+import {
+  createTestUser,
+  initDatabase,
+  testUserEmail,
+  testUsername,
+  testUserPassword,
+  testUserPayload,
+} from '/__test__/helper';
 
 describe('User Model 은', () => {
   beforeAll(async () => {
     await initDatabase();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await User.destroy({
       where: {
         email: testUserEmail,
@@ -19,9 +26,17 @@ describe('User Model 은', () => {
 
     let testUser = await User.create(testUserPayload);
 
-    expect(testUser.username).toEqual(testUsername);
-    expect(testUser.email).toEqual(testUserEmail);
-    expect(testUser.password).toEqual(testUserPassword);
+    expect(testUser.username).toBe(testUsername);
+    expect(testUser.email).toBe(testUserEmail);
+    expect(testUser.password).toBe(testUserPassword);
     expect(await User.count()).toBeGreaterThan(beforeCount);
+  });
+
+  it('findByPk 메서드 테스트', async () => {
+    const userId = await createTestUser();
+
+    const user = await User.findByPk(userId);
+
+    expect(user.username).toBe(testUsername);
   });
 });

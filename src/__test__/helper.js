@@ -17,7 +17,7 @@ export const testUserPayload = {
 
 export const createTestUser = async () => {
   try {
-    await UserService.register(testUserPayload);
+    return await UserService.register(testUserPayload);
   } catch (err) {
     return Promise.reject(err);
   }
