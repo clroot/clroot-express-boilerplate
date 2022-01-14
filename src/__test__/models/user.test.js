@@ -1,18 +1,9 @@
-import { syncAllModel, User } from '/models';
-
-const testUserEmail = 'test@email.com';
-const testUsername = 'test';
-const testUserPassword = 'test-password';
-
-const payload = {
-  email: testUserEmail,
-  username: testUsername,
-  password: testUserPassword,
-};
+import { User } from '/models';
+import { initDatabase, testUserEmail, testUsername, testUserPassword, testUserPayload } from '/__test__/helper';
 
 describe('User Model 은', () => {
   beforeAll(async () => {
-    await syncAllModel();
+    await initDatabase();
   });
 
   afterAll(async () => {
@@ -26,7 +17,7 @@ describe('User Model 은', () => {
   it('email, username, password 필드를 가진다', async () => {
     const beforeCount = await User.count();
 
-    let testUser = await User.create(payload);
+    let testUser = await User.create(testUserPayload);
 
     expect(testUser.username).toEqual(testUsername);
     expect(testUser.email).toEqual(testUserEmail);

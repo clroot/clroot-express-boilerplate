@@ -1,26 +1,7 @@
 import request from 'supertest';
 import httpStatus from 'http-status';
 import { closeServer, startServer } from '/';
-import { User } from '/models';
-import { UserService } from '/service';
-
-const testUserEmail = 'test@email.com';
-const testUsername = 'test';
-const testUserPassword = 'test-password';
-
-const payload = {
-  email: testUserEmail,
-  username: testUsername,
-  password: testUserPassword,
-};
-
-const removeTestUser = async () => {
-  await User.destroy({
-    where: {
-      email: testUserEmail,
-    },
-  });
-};
+import { createTestUser, testUserPayload, removeTestUser, testUserEmail, testUsername } from '/__test__/helper';
 
 describe('auth API 의', () => {
   const apiPrefix = '/api/v1/auth';
@@ -45,7 +26,7 @@ describe('auth API 의', () => {
       it('user 객체를 return 한다.', async () => {
         const { body } = await request(server)
           .post(route)
-          .send(payload)
+          .send(testUserPayload)
           .expect(httpStatus.CREATED);
 
         expect(body.email).toBe(testUserEmail);
@@ -55,13 +36,13 @@ describe('auth API 의', () => {
 
     describe('중복된 이메일이 존재하면', () => {
       beforeAll(async () => {
-        await UserService.register(payload);
+        await createTestUser();
       });
 
       it('CONFLICT 를 return 한다.', async () => {
         const { body } = await request(server)
           .post(route)
-          .send(payload)
+          .send(testUserPayload)
           .expect(httpStatus.CONFLICT);
 
         console.log(body);
