@@ -1,7 +1,22 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
+import bcrypt from 'bcrypt';
 import sequelize from '/database';
 
-const User = sequelize.define('User', {
+class User extends Model {
+  static async findByEmail(email) {
+    return await User.findOne({
+      where: {
+        email,
+      },
+    });
+  }
+
+  async setPassword(password) {
+    this.password = await bcrypt.hash(password, 10);
+  }
+}
+
+User.init({
   id: {
     type: DataTypes.BIGINT,
     autoIncrement: true,
@@ -19,6 +34,8 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
   },
 }, {
+  sequelize,
+  modelName: 'User',
   tableName: 'users',
 });
 
