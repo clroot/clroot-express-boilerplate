@@ -2,7 +2,7 @@ import { Router } from 'express';
 import httpStatus from 'http-status';
 import { User } from '/models';
 import { AuthService, UserService } from '/service';
-import { UserLoginFormDTO, UserRegisterForm } from '/dto';
+import { UserDTO, UserLoginFormDTO, UserRegisterForm } from '/dto';
 import { generateToken } from '/lib/token';
 
 const authApi = Router();
@@ -23,7 +23,7 @@ authApi.post('/register', async (req, res, next) => {
 
     res.status(httpStatus.CREATED);
 
-    return res.json(createdUser);
+    return res.json(new UserDTO(createdUser));
   } catch (error) {
     return next(error);
   }
@@ -52,7 +52,7 @@ authApi.post('/login', async (req, res, next) => {
       httpOnly: true,
     });
 
-    return res.json(user);
+    return res.json(new UserDTO(user));
   } catch (err) {
     return next(err);
   }

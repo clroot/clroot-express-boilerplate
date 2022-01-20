@@ -30,14 +30,17 @@ describe('auth API 의', () => {
         await removeTestUser();
       });
 
-      it('user 객체를 return 한다.', async () => {
+      it('UserDTO 객체를 return 한다.', async () => {
         const { body } = await request(server)
           .post(route)
           .send(testUserPayload)
           .expect(httpStatus.CREATED);
 
-        expect(body.email).toBe(testUserEmail);
-        expect(body.username).toBe(testUsername);
+        const { email, username, ...rest } = body;
+
+        expect(email).toBe(testUserEmail);
+        expect(username).toBe(testUsername);
+        expect(rest).toStrictEqual({});
       });
     });
 
@@ -82,7 +85,7 @@ describe('auth API 의', () => {
     });
 
     describe('성공시', () => {
-      it('user 객체를 return 하고, access-token 을 설정한다.', async () => {
+      it('UserDTO 객체를 return 하고, access-token 을 설정한다.', async () => {
         const payload = {
           email: testUserEmail,
           password: testUserPassword,
@@ -92,12 +95,13 @@ describe('auth API 의', () => {
           .post(route)
           .send(payload)
           .expect(httpStatus.OK);
-        const { email, username } = body;
 
+        const { email, username, ...rest } = body;
         const isThereAccessToken = !!cookie.find(iter => iter.includes('access-token='));
 
         expect(email).toBe(testUserEmail);
         expect(username).toBe(testUsername);
+        expect(rest).toStrictEqual({});
         expect(isThereAccessToken).toBeTruthy();
       });
     });
