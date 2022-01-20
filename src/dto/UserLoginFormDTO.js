@@ -1,4 +1,4 @@
-import { InvalidArgumentsError } from '/error';
+import { InvalidArgumentsException } from '/exception';
 
 class UserLoginFormDTO {
   constructor(data) {
@@ -6,7 +6,7 @@ class UserLoginFormDTO {
     this.password = data.password;
 
     if (!this.email || !this.password) {
-      throw new InvalidArgumentsError('email, password 를 모두 입력해주세요.');
+      throw new InvalidArgumentsException('email, password 를 모두 입력해주세요.');
     }
   }
 }

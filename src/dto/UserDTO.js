@@ -1,4 +1,4 @@
-import { IllegalStateError } from '/error';
+import { IllegalStateException } from '/exception';
 
 class UserDTO {
   constructor(payload) {
@@ -6,7 +6,7 @@ class UserDTO {
     this.username = payload.username;
 
     if (!this.email || !this.username) {
-      throw new IllegalStateError('옳바른 User 객체가 아닙니다.');
+      throw new IllegalStateException('옳바른 User 객체가 아닙니다.');
     }
   }
 }

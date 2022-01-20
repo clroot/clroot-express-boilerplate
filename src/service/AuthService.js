@@ -1,15 +1,15 @@
 import { User } from '/models';
-import { AuthenticationError, UserNotFound } from '/error';
+import { AuthenticationException, UserNotFoundException } from '/exception';
 
 class AuthService {
   async login({ email, password }) {
     const user = await User.findByEmail(email);
     if (!user)
-      throw new UserNotFound();
+      throw new UserNotFoundException();
 
     const isValid = await user.checkPassword(password);
     if (!isValid)
-      throw new AuthenticationError();
+      throw new AuthenticationException();
 
     return user;
   }

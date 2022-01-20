@@ -1,5 +1,5 @@
 import { AuthService } from '/service';
-import { AuthenticationError, UserNotFound } from '/error';
+import { AuthenticationException, UserNotFoundException } from '/exception';
 import { createTestUser, initDatabase, removeTestUser, testUserEmail, testUserPassword } from '/__test__/helper';
 
 const payload = {
@@ -28,12 +28,12 @@ describe('AuthService 의', () => {
     });
 
     describe('가입되지 않은 이메일로 로그인하면', () => {
-      it('UserNotFoundError 를 throw 한다', async () => {
+      it('UserNotFoundException 를 throw 한다', async () => {
         const shouldThrowError = async () => {
           await AuthService.login(payload);
         };
 
-        await expect(shouldThrowError).rejects.toThrowError(UserNotFound);
+        await expect(shouldThrowError).rejects.toThrowError(UserNotFoundException);
       });
     });
 
@@ -46,7 +46,7 @@ describe('AuthService 의', () => {
         await removeTestUser();
       });
 
-      it('AuthenticationError 를 throw 한다', async () => {
+      it('AuthenticationException 를 throw 한다', async () => {
         const shouldThrowError = async () => {
           await AuthService.login({
             ...payload,
@@ -54,7 +54,7 @@ describe('AuthService 의', () => {
           });
         };
 
-        await expect(shouldThrowError).rejects.toThrowError(AuthenticationError);
+        await expect(shouldThrowError).rejects.toThrowError(AuthenticationException);
       });
     });
   });

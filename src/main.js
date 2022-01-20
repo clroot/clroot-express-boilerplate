@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import api from '/api';
-import { errorHandler } from '/error';
+import { errorHandler } from '/exception';
 
 const app = express();
 

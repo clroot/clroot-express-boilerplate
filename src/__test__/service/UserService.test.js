@@ -1,6 +1,6 @@
 import { UserService } from '/service';
 import { User } from '/models';
-import { UserDuplicateError } from '/error';
+import { UserDuplicateException } from '/exception';
 import {
   createTestUser,
   initDatabase,
@@ -44,12 +44,12 @@ describe('UserService 의', () => {
         await removeTestUser();
       });
 
-      it('UserDuplicateError 가 Throw 된다.', async () => {
+      it('UserDuplicateException 가 Throw 된다.', async () => {
         const shouldThrowError = async () => {
           await UserService.register(testUserPayload);
         };
 
-        await expect(shouldThrowError).rejects.toThrowError(UserDuplicateError);
+        await expect(shouldThrowError).rejects.toThrowError(UserDuplicateException);
       });
     });
   });
