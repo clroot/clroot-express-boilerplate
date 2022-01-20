@@ -2,13 +2,20 @@ import { Router } from 'express';
 import httpStatus from 'http-status';
 import { User } from '/models';
 import { AuthService, UserService } from '/service';
-import { AuthenticationError, UserDuplicateError, UserNotFound } from '/error';
-import { generateToken } from '../../lib/token';
+import { UserLoginFormDTO, UserRegisterForm } from '/dto';
+import { generateToken } from '/lib/token';
 
 const authApi = Router();
 
-authApi.post('/register', async (req, res) => {
-  const { email, username, password } = req.body;
+authApi.post('/register', async (req, res, next) => {
+  let registerFormDTO;
+  try {
+    registerFormDTO = new UserRegisterForm(req.body);
+  } catch (error) {
+    return next(error);
+  }
+
+  const { email, username, password } = registerFormDTO;
 
   try {
     await UserService.register({ email, username, password });
@@ -17,25 +24,20 @@ authApi.post('/register', async (req, res) => {
     res.status(httpStatus.CREATED);
 
     return res.json(createdUser);
-  } catch (err) {
-    if (err instanceof UserDuplicateError) {
-      res.status(httpStatus.CONFLICT);
-
-      return res.json({
-        'error': err.message,
-      });
-    } else {
-      throw err;
-    }
+  } catch (error) {
+    return next(error);
   }
 });
 
-authApi.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    res.status(httpStatus.BAD_REQUEST);
-    return res.json({});
+authApi.post('/login', async (req, res, next) => {
+  let userLoginFormDTO;
+  try {
+    userLoginFormDTO = new UserLoginFormDTO(req.body);
+  } catch (error) {
+    return next(error);
   }
+
+  const { email, password } = userLoginFormDTO;
 
   try {
     const user = await AuthService.login({ email, password });
@@ -52,15 +54,8 @@ authApi.post('/login', async (req, res) => {
 
     return res.json(user);
   } catch (err) {
-    if (err instanceof UserNotFound) {
-      res.status(httpStatus.NOT_FOUND);
-    } else if (err instanceof AuthenticationError) {
-      res.status(httpStatus.UNAUTHORIZED);
-    } else {
-      throw err;
-    }
+    return next(err);
   }
-  return res.json({});
 });
 
 authApi.post('/logout', (req, res, next) => {

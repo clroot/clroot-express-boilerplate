@@ -59,6 +59,15 @@ describe('auth API 의', () => {
         console.log(body);
       });
     });
+
+    describe('email, username, password 가 제공되지 않으면', () => {
+      it('BAD_REQUEST 오류가 발생한다.', async () => {
+        await request(server)
+          .post(route)
+          .send({})
+          .expect(httpStatus.BAD_REQUEST);
+      });
+    });
   });
 
   describe('/login 은', () => {
@@ -97,12 +106,10 @@ describe('auth API 의', () => {
       it('email 과 password 가 전달되지 않으면, BAD_REQUEST 에러코드를 return 한다.', async () => {
         const badPayload = {};
 
-        const { body } = await request(server)
+        await request(server)
           .post(route)
           .send(badPayload)
           .expect(httpStatus.BAD_REQUEST);
-
-        expect(body).toStrictEqual({});
       });
 
       it('가입되지 않은 이메일로 로그인을 시도하면, NOT_FOUND 에러코드를 return 한다.', async () => {
@@ -111,12 +118,10 @@ describe('auth API 의', () => {
           password: 'some-password',
         };
 
-        const { body } = await request(server)
+        await request(server)
           .post(route)
           .send(payload)
           .expect(httpStatus.NOT_FOUND);
-
-        expect(body).toStrictEqual({});
       });
 
       it('잘못된 비밀번호로 로그인을 시도하면, UNAUTHORIZED 에러코드를 return 한다.', async () => {
@@ -125,12 +130,10 @@ describe('auth API 의', () => {
           password: 'wrong-password',
         };
 
-        const { body } = await request(server)
+        await request(server)
           .post(route)
           .send(payload)
           .expect(httpStatus.UNAUTHORIZED);
-
-        expect(body).toStrictEqual({});
       });
     });
   });
