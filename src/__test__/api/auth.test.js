@@ -142,4 +142,32 @@ describe('auth API 의', () => {
       });
     });
   });
+
+  describe('/logout 은', () => {
+    const route = `${apiPrefix}/logout`;
+
+    beforeEach(async () => {
+      const loginPayload = {
+        email: testUserEmail,
+        password: testUserPassword,
+      };
+
+      await request(server)
+        .post(`${apiPrefix}/login`)
+        .send(loginPayload);
+    });
+
+    describe('성공시', () => {
+      it('access-token 을 삭제한다.', async () => {
+        const { body, headers: { 'set-cookie': cookie } } = await request(server)
+          .post(route)
+          .expect(httpStatus.NO_CONTENT);
+
+        const isAccessTokenRemoved = !!cookie.find(iter => iter.includes(`${ACCESS_TOKEN_COOKIE}=;`));
+
+        expect(body).toStrictEqual({});
+        expect(isAccessTokenRemoved).toBeTruthy();
+      });
+    });
+  });
 });

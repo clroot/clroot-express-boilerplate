@@ -60,7 +60,13 @@ authApi.post('/login', async (req, res, next) => {
 });
 
 authApi.post('/logout', (req, res, next) => {
-  next();
+  try {
+    res.cookie(ACCESS_TOKEN_COOKIE, '');
+    res.status(httpStatus.NO_CONTENT);
+    return res.send({});
+  } catch (err) {
+    return next(err);
+  }
 });
 
 authApi.get('/check', (req, res, next) => {
