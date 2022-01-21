@@ -1,6 +1,7 @@
 import request from 'supertest';
 import httpStatus from 'http-status';
 import { closeServer, startServer } from '/';
+import { ACCESS_TOKEN_COOKIE } from '/lib/constants';
 import {
   createTestUser,
   removeTestUser,
@@ -97,7 +98,7 @@ describe('auth API 의', () => {
           .expect(httpStatus.OK);
 
         const { email, username, ...rest } = body;
-        const isThereAccessToken = !!cookie.find(iter => iter.includes('access-token='));
+        const isThereAccessToken = !!cookie.find(iter => iter.includes(`${ACCESS_TOKEN_COOKIE}=`));
 
         expect(email).toBe(testUserEmail);
         expect(username).toBe(testUsername);

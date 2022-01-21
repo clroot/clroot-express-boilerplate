@@ -4,6 +4,7 @@ import { User } from '/models';
 import { AuthService, UserService } from '/service';
 import { UserDTO, UserLoginFormDTO, UserRegisterForm } from '/dto';
 import { generateToken } from '/lib/token';
+import { ACCESS_TOKEN_COOKIE } from '/lib/constants';
 
 const authApi = Router();
 
@@ -48,7 +49,7 @@ authApi.post('/login', async (req, res, next) => {
       username,
     });
 
-    res.cookie('access-token', token, {
+    res.cookie(ACCESS_TOKEN_COOKIE, token, {
       httpOnly: true,
     });
 
