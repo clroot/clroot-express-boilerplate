@@ -2,6 +2,11 @@ import { DataTypes, Model } from 'sequelize';
 import bcrypt from 'bcrypt';
 import sequelize from '/database';
 
+export const Role = {
+  USER: 'ROLE_USER',
+  ADMIN: 'ROLE_ADMIN',
+};
+
 class User extends Model {
   static async findByEmail(email) {
     return await User.findOne({
@@ -38,6 +43,12 @@ User.init({
   },
   password: {
     type: DataTypes.STRING,
+  },
+  role: {
+    type: DataTypes.ENUM({
+      values: Object.values(Role),
+    }),
+    defaultValue: Role.USER,
   },
 }, {
   sequelize,

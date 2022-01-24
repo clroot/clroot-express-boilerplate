@@ -1,6 +1,7 @@
 import request from 'supertest';
 import httpStatus from 'http-status';
 import { closeServer, startServer } from '/index';
+import { Role } from '/models/user';
 import { createTestUser, removeTestUser, testUserEmail, testUsername, testUserPayload } from '/__test__/helper';
 
 describe('user API 의', () => {
@@ -29,10 +30,11 @@ describe('user API 의', () => {
           .send(testUserPayload)
           .expect(httpStatus.CREATED);
 
-        const { email, username, ...rest } = body;
+        const { email, username, role, ...rest } = body;
 
         expect(email).toBe(testUserEmail);
         expect(username).toBe(testUsername);
+        expect(role).toBe(Role.USER);
         expect(rest).toStrictEqual({});
       });
     });

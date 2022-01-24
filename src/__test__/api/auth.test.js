@@ -2,6 +2,7 @@ import request from 'supertest';
 import httpStatus from 'http-status';
 import { closeServer, startServer } from '/';
 import { ACCESS_TOKEN_COOKIE } from '/lib/constants';
+import { Role } from '/models/user';
 import { createTestUser, removeTestUser, testUserEmail, testUsername, testUserPassword } from '/__test__/helper';
 
 describe('auth API 의', () => {
@@ -39,11 +40,12 @@ describe('auth API 의', () => {
           .send(payload)
           .expect(httpStatus.OK);
 
-        const { email, username, ...rest } = body;
+        const { email, username, role, ...rest } = body;
         const isThereAccessToken = !!cookie.find(iter => iter.includes(`${ACCESS_TOKEN_COOKIE}=`));
 
         expect(email).toBe(testUserEmail);
         expect(username).toBe(testUsername);
+        expect(role).toBe(Role.USER);
         expect(rest).toStrictEqual({});
         expect(isThereAccessToken).toBeTruthy();
       });
