@@ -15,18 +15,19 @@ export const testUserPayload = {
   password: testUserPassword,
 };
 
-export const createTestUser = async () => {
+export const createTestUser = async (payload = testUserPayload) => {
   try {
-    return await UserService.register(testUserPayload);
+    return await UserService.register(payload);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
-export const removeTestUser = async () => {
+export const removeTestUser = async (payload = testUserPayload) => {
+  const { email } = payload;
   await User.destroy({
     where: {
-      email: testUserEmail,
+      email,
     },
   });
 };
