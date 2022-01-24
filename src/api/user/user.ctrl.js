@@ -1,17 +1,17 @@
-import { UserDTO, UserRegisterForm } from '/dto';
+import { UserDTO, UserRegisterFormDTO } from '/dto';
 import { UserService } from '/service';
 import { User } from '/models';
 import httpStatus from 'http-status';
 
 export const register = async (req, res, next) => {
-  let registerFormDTO;
+  let userRegisterFormDTO;
   try {
-    registerFormDTO = new UserRegisterForm(req.body);
+    userRegisterFormDTO = new UserRegisterFormDTO(req.body);
   } catch (error) {
     return next(error);
   }
 
-  const { email, username, password } = registerFormDTO;
+  const { email, username, password } = userRegisterFormDTO;
 
   try {
     await UserService.register({ email, username, password });
