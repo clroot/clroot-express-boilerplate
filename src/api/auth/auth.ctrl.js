@@ -1,31 +1,8 @@
 import httpStatus from 'http-status';
-import { User } from '/models';
-import { AuthService, UserService } from '/service';
-import { UserDTO, UserLoginFormDTO, UserRegisterForm } from '/dto';
+import { AuthService } from '/service';
+import { UserDTO, UserLoginFormDTO } from '/dto';
 import { generateToken } from '/lib/token';
 import { ACCESS_TOKEN_COOKIE } from '/lib/constants';
-
-export const register = async (req, res, next) => {
-  let registerFormDTO;
-  try {
-    registerFormDTO = new UserRegisterForm(req.body);
-  } catch (error) {
-    return next(error);
-  }
-
-  const { email, username, password } = registerFormDTO;
-
-  try {
-    await UserService.register({ email, username, password });
-    const createdUser = await User.findByEmail(email);
-
-    res.status(httpStatus.CREATED);
-
-    return res.json(new UserDTO(createdUser));
-  } catch (error) {
-    return next(error);
-  }
-};
 
 export const login = async (req, res, next) => {
   let userLoginFormDTO;
