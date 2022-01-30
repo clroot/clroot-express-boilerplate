@@ -1,5 +1,6 @@
 import { syncAllModel, User } from '/models';
 import { UserService } from '/service';
+import request from 'supertest';
 
 export const initDatabase = async () => {
   await syncAllModel();
@@ -30,4 +31,15 @@ export const removeTestUser = async (payload = testUserPayload) => {
       email,
     },
   });
+};
+
+export const getAccessTokenCookies = async (server, userPayload) => {
+  const { email, password } = userPayload;
+  const { headers } = await request(server)
+    .post('/api/v1/auth/login')
+    .send({
+      email,
+      password,
+    });
+  return headers['set-cookie'];
 };
