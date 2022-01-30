@@ -1,31 +1,21 @@
+import request from 'supertest';
 import { syncAllModel, User } from '/models';
 import { UserService } from '/service';
-import request from 'supertest';
 
 export const initDatabase = async () => {
   await syncAllModel();
 };
 
-export const testUserEmail = 'test@email.com';
-export const testUsername = 'test';
-export const testUserPassword = 'test-password';
-
-export const testUserPayload = {
-  email: testUserEmail,
-  username: testUsername,
-  password: testUserPassword,
-};
-
-export const createTestUser = async (payload = testUserPayload) => {
+export const createTestUser = async (userPayload) => {
   try {
-    return await UserService.register(payload);
+    return await UserService.register(userPayload);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
-export const removeTestUser = async (payload = testUserPayload) => {
-  const { email } = payload;
+export const removeTestUser = async (userPayload) => {
+  const { email } = userPayload;
   await User.destroy({
     where: {
       email,

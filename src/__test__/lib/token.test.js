@@ -1,8 +1,9 @@
+import { randEmail, randUserName } from '@ngneat/falso';
 import { decodeToken, generateToken } from '/lib/token';
-import { testUserPayload } from '/__test__/helper';
 
 describe('lib/token.js 모듈의', () => {
-  const { email, username } = testUserPayload;
+  const email = randEmail();
+  const username = randUserName();
 
   describe('generateToken 메서드는', () => {
     describe('성공시', () => {

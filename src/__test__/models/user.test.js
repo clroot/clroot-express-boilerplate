@@ -1,31 +1,32 @@
+import { randEmail, randPassword, randUserName } from '@ngneat/falso';
 import { User } from '/models';
-import {
-  createTestUser,
-  initDatabase,
-  testUserEmail,
-  testUsername,
-  testUserPassword,
-  testUserPayload,
-} from '/__test__/helper';
+import { createTestUser, initDatabase, removeTestUser } from '/__test__/helper';
 import bcrypt from 'bcrypt';
 
 describe('User Model 은', () => {
+
+  const testUserEmail = randEmail();
+  const testUsername = randUserName();
+  const testUserPassword = randPassword();
+
+  const userPayload = {
+    email: testUserEmail,
+    username: testUsername,
+    password: testUserPassword,
+  };
+
   beforeAll(async () => {
     await initDatabase();
   });
 
   afterEach(async () => {
-    await User.destroy({
-      where: {
-        email: testUserEmail,
-      },
-    });
+    await removeTestUser(userPayload);
   });
 
   it('email, username, password 필드를 가진다', async () => {
     const beforeCount = await User.count();
 
-    let user = await User.create(testUserPayload);
+    let user = await User.create(userPayload);
     await user.setPassword(testUserPassword);
 
     expect(user.username).toBe(testUsername);
@@ -35,7 +36,7 @@ describe('User Model 은', () => {
   });
 
   it('findByPk 메서드 테스트', async () => {
-    const userId = await createTestUser();
+    const userId = await createTestUser(userPayload);
 
     const user = await User.findByPk(userId);
 
@@ -43,7 +44,7 @@ describe('User Model 은', () => {
   });
 
   it('findByEmail 메서드 테스트', async () => {
-    await createTestUser();
+    await createTestUser(userPayload);
 
     const user = await User.findByEmail(testUserEmail);
 
