@@ -1,3 +1,5 @@
+import { User } from '/models';
+
 /**
  * User List 조회
  * @param {import('express').Request} req
@@ -6,9 +8,8 @@
  */
 export const list = async (req, res, next) => {
   try {
-    res.send({
-      list: [],
-    });
+    const userList = await User.findAll();
+    res.send(userList);
   } catch (err) {
     next(err);
   }
