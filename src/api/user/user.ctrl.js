@@ -3,6 +3,12 @@ import { UserService } from '/service';
 import { User } from '/models';
 import httpStatus from 'http-status';
 
+/**
+ * 회원가입 API
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export const register = async (req, res, next) => {
   let userRegisterFormDTO;
   try {

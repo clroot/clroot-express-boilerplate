@@ -4,6 +4,13 @@ import { UserDTO, UserLoginFormDTO } from '/dto';
 import { generateToken } from '/lib/token';
 import { ACCESS_TOKEN_COOKIE } from '/lib/constants';
 
+/**
+ * 유저 Login API
+ * httpOnly 쿠키로 access-token 생성
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export const login = async (req, res, next) => {
   let userLoginFormDTO;
   try {
@@ -33,6 +40,13 @@ export const login = async (req, res, next) => {
   }
 };
 
+/**
+ * 유저 Logout API
+ * access-token 쿠키 삭제
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export const logout = (req, res, next) => {
   try {
     res.cookie(ACCESS_TOKEN_COOKIE, '');
@@ -43,6 +57,12 @@ export const logout = (req, res, next) => {
   }
 };
 
+/**
+ * 로그인 확인 API
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export const check = (req, res, next) => {
   try {
     return res.send({ 'check': true });
