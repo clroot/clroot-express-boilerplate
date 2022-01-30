@@ -1,6 +1,10 @@
 import { IllegalStateException } from '/exception';
 
 class UserDTO {
+  /**
+   * @param {import('/models').User} payload
+   * @throws {IllegalStateException}
+   */
   constructor(payload) {
     this.email = payload.email;
     this.username = payload.username;

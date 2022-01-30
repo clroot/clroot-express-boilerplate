@@ -1,10 +1,8 @@
-import UserModel, { Role } from './user';
-
-export const User = UserModel;
-export const UserRole = Role;
+import User from './user';
 
 /**
  * create or alter all models
+ * @function
  * */
 export const syncAllModel = async () => {
   try {
@@ -13,3 +11,5 @@ export const syncAllModel = async () => {
     if (process.env.NODE_ENV !== 'test') return Promise.reject(e);
   }
 };
+
+export { default as User, Role as UserRole } from './user';
