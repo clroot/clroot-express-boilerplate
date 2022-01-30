@@ -35,6 +35,8 @@
     "jest": "^27.4.7",
     "nodemon": "^2.0.15",
     "sqlite3": "^4.2.0",
-    "supertest": "^6.2.1"
+    "supertest": "^6.2.1",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
   }
 }
