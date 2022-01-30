@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import { randEmail, randPassword, randUserName } from '@ngneat/falso';
 import { closeServer, startServer } from '/index';
 import { User, UserRole } from '/models';
+import { PageRequestDTO } from '/dto';
 import { createTestUser, getAccessTokenCookies, removeTestUser } from '/__test__/helper';
 
 describe('admin API 의', () => {
@@ -70,14 +71,35 @@ describe('admin API 의', () => {
     });
 
     describe('성공시', () => {
-      it('list 객체를 return 한다.', async () => {
-        const { body, ...rest } = await request(server)
+      it('PageDTO<UserDTO> 객체를 return 한다.', async () => {
+        const pageRequestDTO = PageRequestDTO.of({
+          page: 1,
+          size: 30,
+        });
+
+        const {
+          body: {
+            content,
+            pageable,
+            totalElements,
+            first,
+            last,
+          },
+        } = await request(server)
           .get(route)
+          .query({ ...pageRequestDTO })
           .set('Cookie', cookies)
           .expect(httpStatus.OK);
 
-        expect(body).toBeInstanceOf(Array);
-        expect(body.length).toBeGreaterThanOrEqual(dummyCount);
+        expect(content).toBeInstanceOf(Array);
+        expect(content.length).toBeLessThanOrEqual(30);
+        expect(totalElements).toBeGreaterThanOrEqual(dummyCount);
+        expect(first).toBeTruthy();
+        expect(last).toBeFalsy();
+        expect(pageable).toStrictEqual({
+          pageNumber: pageRequestDTO.page,
+          pageSize: pageRequestDTO.size,
+        });
       });
     });
   });
