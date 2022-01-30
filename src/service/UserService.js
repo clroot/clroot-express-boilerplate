@@ -2,6 +2,10 @@ import { User } from '/models';
 import { UserDuplicateException } from '/exception';
 
 class UserService {
+  /**
+   * @param {string} email
+   * @throws {UserDuplicateException} given email is already registered
+   * */
   static async validateDuplicateUser(email) {
     const isExist = await User.findByEmail(email);
     if (isExist !== null) {
@@ -9,6 +13,15 @@ class UserService {
     }
   }
 
+  /**
+   * User Register Method
+   * @async
+   * @param {Object} payload
+   * @param {string} payload.email
+   * @param {string} payload.username
+   * @param {string} payload.password
+   * @return {Promise<number>} userId
+   * */
   async register({ email, username, password }) {
     await UserService.validateDuplicateUser(email);
 

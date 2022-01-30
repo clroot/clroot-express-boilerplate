@@ -5,6 +5,13 @@ import { syncAllModel } from './models';
 
 dotenv.config();
 
+/**
+ * @async
+ * @function start application server
+ * @param {number} port=4000
+ * @param {function} callback=undefined
+ * @return {Promise<import('http').Server>}
+ * */
 export const startServer = async (port = process.env.PORT || 4000, callback = undefined) => {
   if (process.env.NODE_ENV === 'test') {
     port = 0;
