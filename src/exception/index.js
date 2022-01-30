@@ -11,7 +11,7 @@ export { default as InvalidArgumentsException } from './InvalidArgumentsExceptio
 export { default as UserDuplicateException } from './UserDuplicateException';
 export { default as UserNotFoundException } from './UserNotFoundException';
 
-export const errorHandler = (err, req, res, next) => {
+export const customErrorHandler = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
@@ -34,5 +34,18 @@ export const errorHandler = (err, req, res, next) => {
   return res.json({
     'error': err.name,
     'message': err.message,
+  });
+};
+
+/**
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const notFoundErrorHandler = (req, res) => {
+  res.status(httpStatus.NOT_FOUND);
+  res.json({
+    'error': 'NOT_FOUND',
+    'url': req.url,
   });
 };
