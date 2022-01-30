@@ -1,6 +1,7 @@
-import UserModel from './user';
+import UserModel, { Role } from './user';
 
 export const User = UserModel;
+export const UserRole = Role;
 
 export const syncAllModel = async () => {
   try {
