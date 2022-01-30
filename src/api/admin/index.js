@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { consumeUser } from '/lib/token';
 import { User, UserRole } from '/models';
 import { AuthenticationException } from '/exception';
 import adminUserApi from './user';
@@ -31,7 +30,6 @@ const checkAdminRole = async (req, res, next) => {
 
 const adminApi = Router();
 
-adminApi.use(consumeUser);
 adminApi.use(checkAdminRole);
 
 adminApi.use('/user', adminUserApi);

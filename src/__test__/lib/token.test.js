@@ -1,5 +1,6 @@
 import { randEmail, randUserName } from '@ngneat/falso';
 import { decodeToken, generateToken } from '/lib/token';
+import { AuthenticationException } from '/exception';
 
 describe('lib/token.js 모듈의', () => {
   const email = randEmail();
@@ -29,6 +30,16 @@ describe('lib/token.js 모듈의', () => {
 
         expect(decodedEmail).toBe(email);
         expect(decodedUsername).toBe(username);
+      });
+    });
+
+    describe('잘못된 토큰을 decode 시도시', () => {
+      it('JsonWebTokenError 를 throw 한다.', async () => {
+        const shouldThrowError = async () => {
+          decodeToken('invalid-token');
+        };
+
+        await expect(shouldThrowError).rejects.toThrowError(AuthenticationException);
       });
     });
   });

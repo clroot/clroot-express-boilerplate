@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { AuthenticationException } from '/exception';
 import { ACCESS_TOKEN_COOKIE } from './constants';
 
 const jwtSecretKey = process.env.JWT_SECRET_KEY || 'JWT_SECRET';
@@ -20,10 +21,14 @@ export const generateToken = (payload, options = { expiresIn: '7d' }) => {
 /**
  * JWT Token 검증
  * @param {string} token - access-token string
- * @throws {JsonWebTokenError} - JWT 토큰 검증 실패시 예외 발생
+ * @throws {AuthenticationException} - JWT 토큰 검증 실패시 예외 발생
  */
 export const decodeToken = (token) => {
-  return jwt.verify(token, jwtSecretKey);
+  try {
+    return jwt.verify(token, jwtSecretKey);
+  } catch (err) {
+    throw new AuthenticationException('유효하지 않은 토큰입니다.');
+  }
 };
 
 /**
@@ -60,6 +65,11 @@ export const consumeUser = (req, res, next) => {
 
     return next();
   } catch (err) {
-    return next();
+    if (err instanceof AuthenticationException) {
+      res.locals.auth = {};
+      return next();
+    } else {
+      return next(err);
+    }
   }
 };
