@@ -27,8 +27,8 @@ describe('admin API 의', () => {
     await closeServer(server);
   });
 
-  describe('/check 는', () => {
-    const route = `${apiPrefix}/check`;
+  describe('/user/list 는', () => {
+    const route = `${apiPrefix}/user/list`;
 
     describe('성공시', () => {
       let adminUser;
@@ -51,7 +51,7 @@ describe('admin API 의', () => {
         await removeTestUser(userPayload);
       });
 
-      it('객체를 return 한다.', async () => {
+      it('list 객체를 return 한다.', async () => {
         await request(server)
           .get(route)
           .set('Cookie', cookies)
