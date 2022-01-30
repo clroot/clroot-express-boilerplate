@@ -57,7 +57,6 @@ User.init({
   },
   email: {
     type: DataTypes.STRING,
-    unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -72,6 +71,12 @@ User.init({
   sequelize,
   modelName: 'User',
   tableName: 'users',
+  indexes: [
+    {
+      unique: true,
+      fields: ['email'],
+    },
+  ],
 });
 
 export default User;
