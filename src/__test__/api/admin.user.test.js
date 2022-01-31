@@ -101,6 +101,40 @@ describe('admin API 의', () => {
           pageSize: pageRequestDTO.size,
         });
       });
+
+      it('PageDTO<UserDTO> 객체 page 처리 확인.', async () => {
+        //given
+        const pageRequestDTO1 = PageRequestDTO.of({
+          page: 1,
+          size: 30,
+        });
+        const pageRequestDTO2 = PageRequestDTO.of({
+          page: 2,
+          size: 30,
+        });
+
+        //when
+        const {
+          body: response1,
+        } = await request(server)
+          .get(route)
+          .query({ ...pageRequestDTO1 })
+          .set('Cookie', cookies)
+          .expect(httpStatus.OK);
+        const {
+          body: response2,
+        } = await request(server)
+          .get(route)
+          .query({ ...pageRequestDTO2 })
+          .set('Cookie', cookies)
+          .expect(httpStatus.OK);
+
+        //then
+        expect(response1.pageable).not.toStrictEqual(response2.pageable);
+        expect(response1.totalElements).toStrictEqual(response2.totalElements);
+        expect(response1.totalPages).toStrictEqual(response2.totalPages);
+        expect(response1.content[0]).not.toStrictEqual(response2.content[0]);
+      });
     });
   });
 });
