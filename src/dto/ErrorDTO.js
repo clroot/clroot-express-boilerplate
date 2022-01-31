@@ -8,6 +8,8 @@
  *            type: string
  *          message:
  *            type: string
+ *          method:
+ *            type: string
  *          url:
  *            type: string
  */
@@ -15,12 +17,13 @@ class ErrorDTO {
   /**
    * @param {Object} payload
    * @param {Error} payload.error
-   * @param {string} payload.url
+   * @param {import('express').Request} payload.req
    */
-  constructor({ error, url }) {
+  constructor({ error, req }) {
     this.error = error.name;
     this.message = error.message;
-    this.url = url;
+    this.method = req.method;
+    this.url = req.url;
   }
 }
 

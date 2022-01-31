@@ -40,7 +40,7 @@ export const customErrorHandler = (err, req, res, next) => {
 
   return res.json(new ErrorDTO({
     error: err,
-    url: req.url,
+    req,
   }));
 };
 
@@ -53,6 +53,6 @@ export const notFoundErrorHandler = (req, res) => {
 
   return res.json(new ErrorDTO({
     error: new Error('404 Not Found'),
-    url: req.url,
+    req,
   }));
 };
