@@ -1,3 +1,23 @@
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      PageDTO:
+ *        properties:
+ *          content:
+ *            type: array
+ *            items:
+ *              type: object
+ *          pageable:
+ *           type: object
+ *           properties:
+ *            pageNumber:
+ *              type: int
+ *              default: 1
+ *            pageSize:
+ *              type: int
+ *              default: 30
+ */
 class PageDTO {
   /**
    * @constructor

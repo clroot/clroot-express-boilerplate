@@ -1,5 +1,18 @@
 import { InvalidArgumentsException } from '/exception';
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserLoginFormDTO:
+ *       properties:
+ *         email:
+ *           type: string
+ *           default: test@email.com
+ *         password:
+ *           type: string
+ *           default: test-password
+ */
 class UserLoginFormDTO {
   /**
    * @param {Object} payload
