@@ -1,4 +1,5 @@
 import httpStatus from 'http-status';
+import { ErrorDTO } from '/dto';
 import AuthenticationException from './AuthenticationException';
 import IllegalStateException from './IllegalStateException';
 import InvalidArgumentsException from './InvalidArgumentsException';
@@ -11,6 +12,12 @@ export { default as InvalidArgumentsException } from './InvalidArgumentsExceptio
 export { default as UserDuplicateException } from './UserDuplicateException';
 export { default as UserNotFoundException } from './UserNotFoundException';
 
+/**
+ * @param {Error} err
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 export const customErrorHandler = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
@@ -31,21 +38,21 @@ export const customErrorHandler = (err, req, res, next) => {
     res.status(httpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  return res.json({
-    'error': err.name,
-    'message': err.message,
-  });
+  return res.json(new ErrorDTO({
+    error: err,
+    url: req.url,
+  }));
 };
 
 /**
- *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
 export const notFoundErrorHandler = (req, res) => {
   res.status(httpStatus.NOT_FOUND);
-  res.json({
-    'error': 'NOT_FOUND',
-    'url': req.url,
-  });
+
+  return res.json(new ErrorDTO({
+    error: new Error('404 Not Found'),
+    url: req.url,
+  }));
 };

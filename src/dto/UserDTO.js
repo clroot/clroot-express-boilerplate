@@ -1,5 +1,21 @@
 import { IllegalStateException } from '/exception';
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserDTO:
+ *       properties:
+ *         email:
+ *           type: string
+ *           default: test@email.com
+ *         username:
+ *           type: string
+ *           default: clroot
+ *         role:
+ *           type: string
+ *           default: ROLE_USER
+ */
 class UserDTO {
   /**
    * @param {import('/models').User} payload

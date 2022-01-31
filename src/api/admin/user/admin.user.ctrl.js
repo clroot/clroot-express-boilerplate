@@ -2,7 +2,34 @@ import { PageDTO, PageRequestDTO, UserDTO } from '/dto';
 import { User } from '/models';
 
 /**
- * User List 조회
+ * @swagger
+ * /api/v1/admin/user/list:
+ *  get:
+ *    tags:
+ *      - Admin
+ *    summary: User List
+ *    description: User 리스트 조회
+ *    parameters:
+ *      - in: query
+ *        name: page
+ *        required: true
+ *        schema:
+ *          type: string
+ *          default: 1
+ *      - in: query
+ *        name: size
+ *        required: true
+ *        schema:
+ *          type: string
+ *          default: 30
+ *    responses:
+ *      200:
+ *        description: User 리스트 조회 성공
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/PageDTO'
+ *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next

@@ -1,5 +1,20 @@
 import { InvalidArgumentsException } from '/exception';
 
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      PageRequestDTO:
+ *        properties:
+ *          page:
+ *            type: int
+ *            default: 1
+ *            description: request page number
+ *          size:
+ *            type: int
+ *            default: 30
+ *            description: item count per page
+ */
 class PageRequestDTO {
   /**
    * @private
