@@ -4,7 +4,7 @@ import logger from 'morgan';
 
 import api from '/api';
 import { customErrorHandler, notFoundErrorHandler } from '/exception';
-import { consumeUser } from '/lib/token';
+import { consumeUser } from '/lib/middleware';
 
 const app = express();
 

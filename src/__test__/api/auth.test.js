@@ -4,7 +4,7 @@ import { randEmail, randPassword, randUserName } from '@ngneat/falso';
 import { closeServer, startServer } from '/';
 import { ACCESS_TOKEN_COOKIE } from '/lib/constants';
 import { Role } from '/models/user';
-import { createTestUser, removeTestUser, testUserPayload } from '/__test__/helper';
+import { createTestUser, getAccessTokenCookies, removeTestUser } from '/__test__/helper';
 
 describe('auth API 의', () => {
   const apiPrefix = '/api/v1/auth';
@@ -106,20 +106,21 @@ describe('auth API 의', () => {
 
   describe('/logout 은', () => {
     const route = `${apiPrefix}/logout`;
-
+    let cookies;
     beforeEach(async () => {
-      const loginPayload = { ...testUserPayload };
+      await createTestUser(userPayload);
+
+      const loginPayload = { ...userPayload };
       delete loginPayload.username;
 
-      await request(server)
-        .post(`${apiPrefix}/login`)
-        .send(loginPayload);
+      cookies = await getAccessTokenCookies(server, loginPayload);
     });
 
     describe('성공시', () => {
       it('access-token 을 삭제한다.', async () => {
         const { body, headers: { 'set-cookie': cookie } } = await request(server)
           .post(route)
+          .set('Cookie', cookies)
           .expect(httpStatus.NO_CONTENT);
 
         const isAccessTokenRemoved = !!cookie.find(iter => iter.includes(`${ACCESS_TOKEN_COOKIE}=;`));

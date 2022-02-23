@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { User, UserRole } from '/models';
+import { UserRole } from '/models';
 import { AuthenticationException } from '/exception';
 import adminUserApi from './user';
 
@@ -8,13 +8,11 @@ import adminUserApi from './user';
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
- * @throws {AuthenticationException} - 관리자 권한이 없을 경우, 예외 발생
  */
 const checkAdminRole = async (req, res, next) => {
-  const { auth: { userId } } = res.locals;
+  const { auth: { user } } = res.locals;
 
   try {
-    const user = await User.findByPk(userId);
     const { role } = user;
 
     if (role !== UserRole.ADMIN) {
