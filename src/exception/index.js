@@ -1,16 +1,11 @@
 import httpStatus from 'http-status';
 import { ErrorDTO } from '/dto';
+import logger from '/logger';
 import AuthenticationException from './AuthenticationException';
 import IllegalStateException from './IllegalStateException';
 import InvalidArgumentsException from './InvalidArgumentsException';
 import UserNotFoundException from './UserNotFoundException';
 import UserDuplicateException from './UserDuplicateException';
-
-export { default as AuthenticationException } from './AuthenticationException';
-export { default as IllegalStateException } from './IllegalStateException';
-export { default as InvalidArgumentsException } from './InvalidArgumentsException';
-export { default as UserDuplicateException } from './UserDuplicateException';
-export { default as UserNotFoundException } from './UserNotFoundException';
 
 /**
  * @param {Error} err
@@ -22,6 +17,11 @@ export const customErrorHandler = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
+
+  const remoteIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const errorMessage = `${remoteIp} - ${req.method} ${req.url} ${err}`;
+
+  logger.error(errorMessage);
 
   if (err instanceof InvalidArgumentsException) {
     res.status(httpStatus.BAD_REQUEST);
@@ -56,3 +56,9 @@ export const notFoundErrorHandler = (req, res) => {
     req,
   }));
 };
+
+export { default as AuthenticationException } from './AuthenticationException';
+export { default as IllegalStateException } from './IllegalStateException';
+export { default as InvalidArgumentsException } from './InvalidArgumentsException';
+export { default as UserDuplicateException } from './UserDuplicateException';
+export { default as UserNotFoundException } from './UserNotFoundException';

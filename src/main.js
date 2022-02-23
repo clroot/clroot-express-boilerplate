@@ -3,12 +3,13 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import api from '/api';
+import { stream } from '/logger';
 import { customErrorHandler, notFoundErrorHandler } from '/exception';
 import { consumeUser } from '/lib/middleware';
 
 const app = express();
 
-app.use(logger(process.env.LOG_LEVEL || 'dev'));
+app.use(logger(process.env.LOG_LEVEL || 'short', { stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
